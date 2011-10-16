@@ -4,10 +4,14 @@ import sys
 import os
 import shutil
 import ctypes
-MessageBox = ctypes.windll.user32.MessageBoxA
+if sys.platform == 'win32':
+	MessageBox = ctypes.windll.user32.MessageBoxA
 
 def handle_exception(type, value, traceback):
-	MessageBox(None, 'An error occured. When reporting the bug, please supply stdout.log and stderr.log.', 'Error', 0x10)
+	if sys.platform == 'win32':
+		MessageBox(None, 'An error occured. When reporting the bug, please supply stdout.log and stderr.log.', 'Error', 0x10)
+	else:
+		print 'An error occured. When reporting the bug, please supply stdout.log and stderr.log.'
 	return sys.__excepthook__(type, value, traceback)
 
 class Logger(object):
